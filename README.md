@@ -1,6 +1,6 @@
-# Study-Notion-Mern-Backend
+#GS Academia -Mern-Backend
 
-> Backend API for StudyNotion application, which is a Edtech Website built on MERN Technologies.
+> Backend API for GS Academia application, which is a Edtech Website built on MERN Technologies.
 
 ## Links
 
@@ -14,9 +14,9 @@
 >
 > #### Backend Live at - [https://api.study-notion-sunny8080.shop](https://api.study-notion-sunny8080.shop)
 
-## Usage
+<!-- ## Usage
 
-This is used to perform any CRUD operation which is required in StudyNotion application
+This is used to perform any CRUD operation which is required in GS Academia application
 
 ## How to Use
 
@@ -58,7 +58,7 @@ npm run dev
 npm start
 ```
 
-## Live at
+## Live at -->
 
 The API is live at - [https://api.study-notion-sunny8080.shop](https://api.study-notion-sunny8080.shop)
 
@@ -69,5 +69,5 @@ The API is live at ( on Render ) - [https://study-notion-mern-backend-sunny8080.
 Extensive documentation with examples - [Click Here](https://documenter.getpostman.com/view/19721099/2s9YJjSf9i)
 
 - Version - 1.0.0
-- License: sunny8080
-- Author: Sunny Kumar
+- License: parth5404
+- Author: Parth Lahoti
