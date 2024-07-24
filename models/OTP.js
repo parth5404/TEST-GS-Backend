@@ -21,7 +21,7 @@ const OTPSchema = new mongoose.Schema({
 
 const sendOtpEmail = async (toEmail, otp) => {
   try {
-    const mailResponse = await emailSender(toEmail, 'Verification Email from StudyNotion', emailOtpTemplate(otp));
+    const mailResponse = await emailSender(toEmail, 'Verification Email from GS-Academia', emailOtpTemplate(otp));
   } catch (err) {
     clgDev(`Error occurred while sending otp : ${err.message}`);
     throw err;
