@@ -2,71 +2,27 @@
 
 > Backend API for GS Academia application, which is a Edtech Website built on MERN Technologies.
 
+
+
 ## Links
 
-> #### Full Stack GitHub Repo - [Click Here](https://github.com/sunny8080/Study-Notion-Mern)
+> #### Full Stack GitHub Repo - [Click Here]()
 >
-> #### Frontend GitHub Repo - [Click Here](https://github.com/sunny8080/Study-Notion-Mern-Frontend)
+> #### Frontend GitHub Repo - [Click Here](https://github.com/parth5404/TEST-GS-Frontend)
 >
-> #### Backend GitHub Repo - [Click Here](https://github.com/sunny8080/Study-Notion-Mern-Backend)
+> #### Backend GitHub Repo - [Click Here](https://github.com/parth5404/TEST-GS-Backend)
 >
-> #### Frontend Live at - [https://study-notion-sunny8080.shop](https://study-notion-sunny8080.shop)
+> #### Frontend Live at - [https://gsacademia-parth-lahotis-projects.vercel.app/](https://gsacademia-parth-lahotis-projects.vercel.app/)
 >
-> #### Backend Live at - [https://api.study-notion-sunny8080.shop](https://api.study-notion-sunny8080.shop)
+> #### Backend Live at - [https://test-gs-backend.onrender.com/](https://test-gs-backend.onrender.com/)
 
-<!-- ## Usage
+## Usage
 
-This is used to perform any CRUD operation which is required in GS Academia application
+**This is an online learning platform exclusively for SGSITS Indore students and faculty, where instructors can share course materials and students can access them.** 
 
-## How to Use
 
-#### 1. Clone or extract this github repo in your local machine
 
-```
-git clone https://github.com/sunny8080/Study-Notion-Mern-Backend backend
-```
-
-#### 2. Move to backend directory
-
-```
-cd backend
-```
-
-#### 3. Install dependencies
-
-```
-npm i
-```
-
-#### 4. Rename "config/example.config.env" to "config/config.env" and set/update all the values/settings of your own
-
-```
-mv config/example.config.env config/config.env
-```
-
-#### 5. Run App (default - server will run on port 4000)
-
-##### 5.1. Run in development mode
-
-```
-npm run dev
-```
-
-##### 5.2. Run in production mode
-
-```
-npm start
-```
-
-## Live at -->
-
-The API is live at - [https://api.study-notion-sunny8080.shop](https://api.study-notion-sunny8080.shop)
-
->
-
-The API is live at ( on Render ) - [https://study-notion-mern-backend-sunny8080.onrender.com](https://study-notion-mern-backend-sunny8080.onrender.com)
-
-Extensive documentation with examples - [Click Here](https://documenter.getpostman.com/view/19721099/2s9YJjSf9i)
+The Website is live at ( on Vercel ) - [GS Acdemia](https://gsacademia-parth-lahotis-projects.vercel.app/)
 
 - Version - 1.0.0
 - License: parth5404
