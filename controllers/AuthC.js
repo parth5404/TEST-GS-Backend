@@ -234,7 +234,7 @@ exports.forgotPassword = async (req, res, next) => {
       const response = await emailSender(
         user.email,
         `Password reset for ${user.firstName} ${user.lastName}`,
-        `You are receiving this email because you (or someone else) has requested the reset of your Study Notion account password. 
+        `You are receiving this email because you (or someone else) has requested the reset of your GS Academia account password. 
         Please click below to reset your password : \n\n ${resetUrl}
         `
       );
