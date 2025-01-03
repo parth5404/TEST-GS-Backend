@@ -30,6 +30,7 @@ app.use(
 );
 app.use(cookieParser());
 app.use(cors());
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Mount routes
@@ -60,7 +61,7 @@ app.use('/api/v1/courseprogress', CourseProgressR);
 app.use(errorHandler); // must be after mounting the routes
 
 app.get('/', (req, res) => {
-  res.send('Hello ji');
+  res.send('Test Only');
 });
 
 app.listen(PORT, (err) => {
@@ -71,12 +72,3 @@ app.listen(PORT, (err) => {
   clgDev(`Server in running on ${PORT}`.yellow.underline.bold);
 });
 
-// TODO : check for these, what it is
-/**
- * // handle unhandled promise rejection
- * process.on("unhandledRejection", (err, promise) => {
- *  clgDev(`Error : ${err.message}`.red);
- *  // close server & exit process
- *  server.close(()=>process.exit(1));
- * });
- */

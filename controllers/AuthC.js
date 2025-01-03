@@ -353,7 +353,21 @@ exports.createAdmin = async (req, res, next) => {
     next(new ErrorResponse('Failed to create admin, Please try again', 500));
   }
 };
-
+//Guest Login
+exports.guestLogin=async(req,res,next)=>{
+  const profile=Profile.findOne({
+    contactNumber:"1234567890"
+  })
+  const guestuser=User.findOne({
+    firstName:"Guest",
+    lastName:"User",
+    email:"guest@gmail.com",
+    password:"Guest@123",
+    role:"Guest",
+    avatar:"https://api.dicebear.com/5.x/initials/svg?seed=Guest%20User",
+    profile:profile._id,
+  })
+}
 // Function to send token in cookies  // VERIFIED
 const sendTokenResponse = (res, user, statusCode) => {
   const token = jwt.sign(
