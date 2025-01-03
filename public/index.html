@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8" />
     <link rel="icon" href="favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <meta name="description" content="Web site created using create-react-app" />
     <link rel="apple-touch-icon" href="logo192.png" />
-    <title>GS Academia- Backend</title>
+    <title>GS Academia - Backend</title>
 
-    <!-- meta tags -->
-    <!-- Twitter -->
+    <!-- Social Media Meta Tags -->
     <meta name="twitter:card" content="" />
     <meta name="twitter:site" content="@" />
     <meta name="twitter:creator" content="@" />
@@ -18,7 +17,6 @@
     <meta name="twitter:description" content="Backend Restful API for GS Academia. GS Academia is Edtech Website which is a Full Stack (MERN) website." />
     <meta name="twitter:image" content="https://i.postimg.cc/Gt8KWn0f/GSLOGOEMAIL.gif" />
 
-    <!-- Facebook -->
     <meta property="og:url" content="https://test-gs-backend.onrender.com" />
     <meta property="og:title" content="GS Academia Backend - Edtech Website | parth5404" />
     <meta property="og:description" content="Backend Restful API for GS Academia. GS Academia is Edtech Website which is a Full Stack (MERN) website." />
@@ -27,41 +25,90 @@
     <meta property="og:image:type" content="image/jpg" />
 
     <style>
-      body {
-        background-color: #ffffff;
-        font-family: Arial, sans-serif;
-        font-size: 16px;
-        line-height: 1.4;
-        color: #333333;
-        margin: 0;
-        padding: 0;
-      }
+        body {
+            background-color: #f5f5f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            line-height: 1.6;
+        }
 
-      .container {
-        margin: 0 auto;
-        padding: 20px;
-        text-align: center;
-      }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .logo {
+            max-width: 200px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        h2, h3, h4 {
+            margin: 20px 0;
+        }
+
+        a {
+            color: #2196F3;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #1976D2;
+            text-decoration: underline;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #2196F3;
+            color: white;
+            border-radius: 5px;
+            margin: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #1976D2;
+            text-decoration: none;
+        }
     </style>
-  </head>
-  <body>
-    <!-- TODO -->
+</head>
+<body>
     <div class="container">
-      <div>
-        <a href="https://gsacademia-parth-lahotis-projects.vercel.app/">
-          <img class="logo" src="https://i.postimg.cc/Gt8KWn0f/GSLOGOEMAIL.gif" alt="GSAcademia-Logo" />
-        </a>
-      </div>
+        <div class="card">
+            <a href="https://gsacademia-parth-lahotis-projects.vercel.app/">
+                <img class="logo" src="https://i.postimg.cc/Gt8KWn0f/GSLOGOEMAIL.gif" alt="GSAcademia-Logo" />
+            </a>
 
-      <h2>This is <b>Backend</b> of <a href="https://gsacademia-parth-lahotis-projects.vercel.app/">GS Academia</a>. It contains Restful APIs for GS Academia application.</h2>
+            <h2>Welcome to the Backend of <a href="https://gsacademia-parth-lahotis-projects.vercel.app/">GS Academia</a></h2>
+            
+            <p>This server hosts the Restful APIs that power the GS Academia application.</p>
 
-      <h3>
-        <a href="https://study-notion-mern-sunny8080.netlify.app/"><b>GS Academia</b></a> is a Edtech Website. It is a Full Stack (MERN) Website
-      </h3>
+            <h3>
+                <a href="https://gsacademia-parth-lahotis-projects.vercel.app/">GS Academia</a> is an Edtech Platform built with the MERN Stack
+            </h3>
 
-      <h4><a href="https://gsacademia-parth-lahotis-projects.vercel.app/">Go to GS Academia</a></h4>
-
-      <h4><a href="https://gsacademia-parth-lahotis-projects.vercel.app/">Go to GitHub Repo of GS Academia</a></h4>
+            <div>
+                <a href="https://gsacademia-parth-lahotis-projects.vercel.app/" class="button">Visit GS Academia</a>
+                <a href="https://github.com/parth5404/GS-Academia" class="button">View GitHub Repository</a>
+            </div>
+        </div>
     </div>
-  </body>
+</body>
 </html>
