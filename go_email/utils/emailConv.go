@@ -9,7 +9,7 @@ import (
 )
 
 func EmailConv(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.ParseFiles("templates/accountCreationTemplate.html")
+	tmpl, err := template.ParseFiles("mail/templates/accountCreationTemplate.html")
 	if err != nil {
 		http.Error(w, "Template error", http.StatusInternalServerError)
 		return
