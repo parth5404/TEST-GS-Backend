@@ -102,7 +102,7 @@ exports.signup = async (req, res, next) => {
     });
 
     // send a notification to user for account creation
-    await emailSender(email, `Account created successfully for ${firstName} ${lastName}`, accountCreationTemplate(firstName + ' ' + lastName));
+    await emailSender(email, `Account created successfully for ${firstName} ${lastName}`, accountCreationTemplate, firstName, lastName);
 
     sendTokenResponse(res, user, 201);
   } catch (err) {
@@ -190,7 +190,7 @@ exports.changePassword = async (req, res, next) => {
 
     // Send password change email to user
     try {
-      const response = await emailSender(user.email, `Password updated successfully for ${user.firstName} ${user.lastName}`, passwordUpdateTemplate(user.email, `${user.firstName} ${user.lastName}`));
+      const response = await emailSender(user.email, `Password updated successfully for ${user.firstName} ${user.lastName}`, passwordUpdateTemplate, user.firstName, user.lastName);
     } catch (err) {
       return next(new ErrorResponse('Error occurred while sending email', 500));
     }
@@ -234,9 +234,10 @@ exports.forgotPassword = async (req, res, next) => {
       const response = await emailSender(
         user.email,
         `Password reset for ${user.firstName} ${user.lastName}`,
-        `You are receiving this email because you (or someone else) has requested the reset of your GS Academia account password. 
-        Please click below to reset your password : \n\n ${resetUrl}
-        `
+        JSON.stringify({"body":`You are receiving this email because you (or someone else) has requested the reset of your GS Academia account password. 
+        Please click below to reset your password : \n\n ${resetUrl}`}),
+        user.firstName,
+        user.lastName
       );
     } catch (err) {
       return next(new ErrorResponse('Failed to send reset email. Please try again', 500));
@@ -292,9 +293,11 @@ exports.resetPassword = async (req, res, next) => {
       const response = await emailSender(
         user.email,
         `Password has been reset successfully for ${user.firstName} ${user.lastName}`,
-        `Your password has been reset successfully. Thanks for being with us.
+        JSON.stringify({"body":`Your password has been reset successfully. Thanks for being with us.
         To visit our site : ${process.env.STUDY_NOTION_FRONTEND_SITE}
-        `
+        `}),
+        user.firstName,
+        user.lastName
       );
     } catch (err) {
       return next(new ErrorResponse('Failed to send reset successful email. Please try again', 500));
@@ -343,7 +346,7 @@ exports.createAdmin = async (req, res, next) => {
     });
 
     // send a notification to user for account creation
-    await emailSender(email, `Admin account created successfully for ${firstName} ${lastName}`, adminCreatedTemplate(firstName + ' ' + lastName));
+    await emailSender(email, `Admin account created successfully for ${firstName} ${lastName}`, adminCreatedTemplate, firstName, lastName);
 
     res.status(201).json({
       success: true,

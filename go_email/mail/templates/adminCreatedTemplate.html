@@ -1,65 +1,110 @@
-
-  <!DOCTYPE html>
-	<html lang="en">
+<!DOCTYPE html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Account Registration Confirmation</title>
+    <title>Admin Account Creation</title>
 
     <style>
       body {
-        background-color: #ffffff;
-        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         font-size: 16px;
-        line-height: 1.4;
-        color: #333333;
+        line-height: 1.6;
+        color: #2d3436;
         margin: 0;
         padding: 0;
       }
 
       .container {
         max-width: 600px;
-        margin: 0 auto;
-        padding: 20px;
+        margin: 40px auto;
+        padding: 30px;
         text-align: center;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       }
 
       .logo {
-        max-width: 200px;
-        margin-bottom: 20px;
+        max-width: 220px;
+        margin-bottom: 30px;
+        border-radius: 8px;
       }
 
       .message {
-        font-size: 18px;
-        font-weight: bold;
-        margin-bottom: 20px;
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 25px;
+        color: #2d3436;
+        text-transform: uppercase;
+        letter-spacing: 1px;
       }
 
       .body {
         font-size: 16px;
-        margin-bottom: 20px;
+        margin-bottom: 30px;
+        line-height: 1.8;
+      }
+
+      .body p {
+        margin: 15px 0;
       }
 
       .cta {
         display: inline-block;
-        padding: 10px 20px;
+        padding: 12px 30px;
         background-color: #ffd60a;
         color: #000000;
         text-decoration: none;
-        border-radius: 5px;
+        border-radius: 8px;
         font-size: 16px;
-        font-weight: bold;
-        margin-top: 20px;
+        font-weight: 600;
+        margin-top: 25px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
 
       .support {
         font-size: 14px;
-        color: #999999;
-        margin-top: 20px;
+        color: #636e72;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #dfe6e9;
+      }
+
+      .support a {
+        color: #0984e3;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s ease;
+      }
+
+      .support a:hover {
+        color: #0652DD;
       }
 
       .highlight {
-        font-weight: bold;
+        font-weight: 700;
+        color: #2d3436;
+      }
+
+      .golang-badge {
+        margin-top: 20px;
+        padding: 8px 15px;
+        background-color: #00ADD8;
+        color: white;
+        border-radius: 6px;
+        display: inline-block;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+      }
+
+      .golang-badge img {
+        height: 20px;
+        vertical-align: middle;
+        margin-right: 5px;
       }
     </style>
   </head>
@@ -68,28 +113,29 @@
     <div class="container">
       <!-- Header -->
       <div>
-       
-          <img class="logo" src="https://i.postimg.cc/Gt8KWn0f/GSLOGOEMAIL.gif" alt="GS-Academia" />
-  
+        <img class="logo" src="https://i.ibb.co/6R61688y/angela-connor-gopheras.gif" alt="GS-Academia" />
       </div>
+
       <!-- Body -->
       <div class="body">
-        <p class="message">Account Registration Confirmation</p>
+        <p class="message">Welcome Admin! 🎉</p>
 
         <p>Dear {{.Name}},</p>
-        <p>Your admin account is successfully created on GS Academia. We are happy to have you onboard !</p>
+        <p>Your admin account has been successfully created on GS Academia. We're excited to have you join our administrative team! 🚀</p>
 
-        <p>Please log in to your dashboard to start your journey.</p>
-       
+        <p>You now have access to the admin dashboard where you can manage and oversee platform operations.</p>
 
-        <p>Happy journey !</p>
+        <p class="highlight">Let's make learning awesome together! 💪</p>
       </div>
 
       <!-- Footer -->
       <div class="support">
-        <p>If you have any questions or need assistance, please feel free to reach out to us at <a href="mailto:gsacademia5404@gmail.com">Support</a>. We are here to help!</p>
+        <p>Need assistance? Have questions? Contact our technical support team at <a href="mailto:gsacademia5404@gmail.com">Support</a>.</p>
+        <div class="golang-badge">
+          <img src="https://go.dev/images/go-logo-white.svg" alt="Go" />
+          Powered by Go
+        </div>
       </div>
     </div>
   </body>
 </html>
-

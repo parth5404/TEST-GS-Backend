@@ -18,7 +18,7 @@ exports.contactUs = async (req, res, next) => {
       const mailResponse1 = await emailSender(
         process.env.SITE_OWNER_EMAIL,
         `Contact Me - ${message.substring(0, 10)} ...`,
-        `
+        JSON.stringify({"body":`
       <h1>Someone requested to contact you</h1>
       <h2>Contact Details</h2>
       <h1></h1>
@@ -29,10 +29,16 @@ exports.contactUs = async (req, res, next) => {
       <h1></h1>
       <h2>Kindly contact them, and solve their problem as soon as possible.</h2>
       <h1>Thank You !</h1>
-      `
+      `}),
+      firstName,
+      lastName
       );
 
-      const mailResponse2 = await emailSender(email, 'Your Data sent to us successfully', contactUsEmail(email, firstName, lastName, message, phoneNo, countryCode));
+      const mailResponse2 = await emailSender(email, 'Your Data sent to us successfully', contactUsEmail, firstName, lastName,JSON.stringify({
+        "countryCode":countryCode,
+        "phoneNo":phoneNo,
+        "message":message
+      }));
 
       return res.json({
         success: true,
