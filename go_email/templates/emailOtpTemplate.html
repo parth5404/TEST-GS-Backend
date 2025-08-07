@@ -1,11 +1,9 @@
-const adminCreatedTemplate = (name) => {
-	return `
-  <!DOCTYPE html>
-	<html lang="en">
+<!DOCTYPE html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Account Registration Confirmation</title>
+    <title>OTP Verification Email</title>
 
     <style>
       body {
@@ -69,21 +67,17 @@ const adminCreatedTemplate = (name) => {
     <div class="container">
       <!-- Header -->
       <div>
-       
           <img class="logo" src="https://i.postimg.cc/Gt8KWn0f/GSLOGOEMAIL.gif" alt="GS-Academia" />
-  
       </div>
+
       <!-- Body -->
       <div class="body">
-        <p class="message">Account Registration Confirmation</p>
+        <p class="message">OTP Verification Email</p>
 
-        <p>Dear ${name},</p>
-        <p>Your admin account is successfully created on GS Academia. We are happy to have you onboard !</p>
-
-        <p>Please log in to your dashboard to start your journey.</p>
-       
-
-        <p>Happy journey !</p>
+        <p>Dear User,</p>
+        <p>Thank you for registering with GS Academia. To complete your registration, please use the following OTP (One-Time Password) to verify your account:</p>
+        <h2 class="highlight">{{.OTP}}</h2>
+        <p>This OTP is valid for 5 minutes. If you did not request this verification, please disregard this email. Once your account is verified, you will have access to our platform and its features.</p>
       </div>
 
       <!-- Footer -->
@@ -93,7 +87,3 @@ const adminCreatedTemplate = (name) => {
     </div>
   </body>
 </html>
-`;
-};
-
-module.exports = adminCreatedTemplate;

@@ -1,11 +1,9 @@
-const passwordUpdateTemplate = (email, name) => {
-  return `
-	<!DOCTYPE html>
-	<html lang="en">
+<!DOCTYPE html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Password Update Confirmation</title>
+    <title>Course Registration Confirmation</title>
 
     <style>
       body {
@@ -68,19 +66,17 @@ const passwordUpdateTemplate = (email, name) => {
   <body>
     <div class="container">
       <!-- Header -->
-     <div>
-       
-          <img class="logo" src="https://i.postimg.cc/Gt8KWn0f/GSLOGOEMAIL.gif" alt="GS-Academia" />
-  
+      <div>
+        <img class="logo" src="https://i.postimg.cc/Gt8KWn0f/GSLOGOEMAIL.gif" alt="GS-Academia" />
       </div>
 
       <!-- Body -->
       <div class="body">
-        <p class="message">Password Update Confirmation</p>
+        <p class="message">Course Registration Confirmation</p>
 
-        <p>Hey ${name},</p>
-        <p>Your password has been successfully updated for the email <span class="highlight">${email}</span>.</p>
-        <p>If you did not request this password change, please contact us immediately to secure your account.</p>
+        <p>Dear {{.Name}},</p>
+        <p>You have successfully registered for the course <span class="highlight">"{{.CourseName}}"</span>. We are excited to have you as a participant!</p>
+        <p>Please log in to your learning dashboard to access the course materials and start your learning journey.</p>
       </div>
 
       <!-- Footer -->
@@ -88,9 +84,5 @@ const passwordUpdateTemplate = (email, name) => {
         <p>If you have any questions or need assistance, please feel free to reach out to us at <a href="mailto:gsacademia5404@gmail.com">Support</a>. We are here to help!</p>
       </div>
     </div>
-	</body>
-	</html>
-`;
-};
-
-module.exports = passwordUpdateTemplate;
+  </body>
+</html>

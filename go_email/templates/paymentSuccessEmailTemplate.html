@@ -1,11 +1,9 @@
-const accountCreationTemplate = (name) => {
-	return `
-	<!DOCTYPE html>
-	<html lang="en">
+<!DOCTYPE html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Account Registration Confirmation</title>
+    <title>Course Payment Confirmation</title>
 
     <style>
       body {
@@ -69,22 +67,18 @@ const accountCreationTemplate = (name) => {
     <div class="container">
       <!-- Header -->
       <div>
-       
-          <img class="logo" src="https://i.postimg.cc/Gt8KWn0f/GSLOGOEMAIL.gif" alt="GS-Academia" />
-  
+        <img class="logo" src="https://i.postimg.cc/Gt8KWn0f/GSLOGOEMAIL.gif" alt="GS-Academia" />
       </div>
 
       <!-- Body -->
       <div class="body">
-        <p class="message">Account Registration Confirmation</p>
+        <p class="message">Course Payment Confirmation</p>
 
-        <p>Dear ${name},</p>
-        <p>Your account is successfully registered on GS Academia. We are happy to have you onboard !</p>
-
-        <p>Please log in to your dashboard to start your journey.</p>
-        
-
-        <p>Happy journey !</p>
+        <p>Dear {{.Name}},</p>
+        <p>We have received a payment of <span class="highlight">₹{{.Amount}}</span></p>
+        <p>.</p>
+        <p>Your Payment ID is <b>{{.PaymentId}}</b></p>
+        <p>Your Order ID is <b>{{.OrderId}}</b></p>
       </div>
 
       <!-- Footer -->
@@ -94,8 +88,3 @@ const accountCreationTemplate = (name) => {
     </div>
   </body>
 </html>
-  
-  `;
-};
-
-module.exports = accountCreationTemplate;
