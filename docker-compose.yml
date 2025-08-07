@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  node-app:
+    build: ./backend_node
+    ports:
+      - "3000:3000"
+    depends_on:
+      - go_email
+    environment:
+      - GO_SERVICE_URL=http://go_email:8080
+
+  go_email:
+    build: ./go_email
+    ports:
+      - "8080:8080"

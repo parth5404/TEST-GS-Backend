@@ -22,7 +22,7 @@ const emailSender = async (toEmail, subject, template, userFirstName, userLastNa
       extraData: extraData
     };
     
-    const response = await axios.post('http://localhost:8080/send-email', requestData);
+    const response = await axios.post(`${process.env.GO_SERVICE_URL}/send-email`, requestData);
 
     // For real purpose 
     // const transporter = nodemailer.createTransport({
