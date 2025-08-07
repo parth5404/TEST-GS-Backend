@@ -4,9 +4,10 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-
 	"github.com/gorilla/mux"
+	"jwt.go/auth"
 )
+
 
 type User struct {
 	ID       string `json:"id"`
