@@ -1,16 +1,26 @@
-version: '3.8'
+version: "3.9"
 
 services:
-  node-app:
-    build: ./backend_node
+  go-mail:
+    image: parth5404/go-mail:latest
+    env_file:
+      - ./go_email/.env
     ports:
-      - "3000:3000"
-    depends_on:
-      - go_email
-    environment:
-      - GO_SERVICE_URL=http://go_email:8080
+      - "8080:8080" # optional agar bahar se direct Go ko access karna ho
+    networks:
+      - app-network
 
-  go_email:
-    build: ./go_email
+  node-app:
+    image: parth5404/backend-node:latest
+    env_file:
+      - ./backend_node/.env
     ports:
-      - "8080:8080"
+      - "4000:4000"
+    depends_on:
+      - go-mail
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

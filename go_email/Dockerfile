@@ -1,16 +1,15 @@
-FROM golang:1.24.2
-
+# Stage 1: Build the Go binary
+FROM golang:1.24.2-alpine AS builder
 WORKDIR /app
-
-# Copy go.mod and go.sum first for caching
 COPY go.mod go.sum ./
 RUN go mod download
-
-# Copy the rest of the code
 COPY . .
+RUN go build -o go_email .
 
-# Build the app
-RUN go build -o main .
-
-# Run the binary
-CMD ["./main"]
+# Stage 2: Run the binary
+FROM alpine:3.20
+WORKDIR /app
+COPY --from=builder /app/go_email .
+# Env vars will be injected at runtime
+EXPOSE 8080
+CMD ["./go_email"]

@@ -1,14 +1,14 @@
-FROM node:20
-
+# Stage 1: Install dependencies (include devDeps)
+FROM node:20-alpine AS deps
 WORKDIR /app
-
-# Copy only package.json first
 COPY package*.json ./
+RUN npm install --include=dev
 
-# Install dependencies inside the container
-RUN npm install
-
-# Now copy the rest of the code
+# Stage 2: Copy source & run
+FROM node:20-alpine
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+EXPOSE 4000
 CMD ["npm", "run", "dev"]
