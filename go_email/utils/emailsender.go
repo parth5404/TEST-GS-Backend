@@ -5,16 +5,16 @@ import (
 	//"fmt"
 	"os"
 	"gopkg.in/gomail.v2"
-	"github.com/joho/godotenv"
-	"log"
+	// "github.com/joho/godotenv"
+	// "log"
 
 )
 
 func SendEmail(to string, subject string, body string) error {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	// err := godotenv.Load()
+	// if err != nil {
+	// 	log.Fatal("Error loading .env file")
+	// }
 	m := gomail.NewMessage()
 	m.SetHeader("From", "gsacademia5404@gmail.com")
 	m.SetHeader("To", to)
