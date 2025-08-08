@@ -19,7 +19,7 @@ const dotenv=require("dotenv").config();
 exports.sendOtp = async (req, res, next) => {
   try {
     const { email } = req.body;
-
+    console.log(email);
     // Check if user is already present
     if (await User.findOne({ email })) {
       return next(new ErrorResponse('User is already registered', 401));
@@ -38,9 +38,11 @@ exports.sendOtp = async (req, res, next) => {
       otp = otpGenerator.generate(6, options);
       user = await OTP.findOne({ otp });
     } while (user);
+    console.log(otp);
 
     // Create OTP
     const otpObj = await OTP.create({ email, otp });
+    console.log(otpObj);
 
     res.status(200).json({
       success: true,
@@ -102,7 +104,7 @@ exports.signup = async (req, res, next) => {
     });
 
     // send a notification to user for account creation
-    await emailSender(email, `Account created successfully for ${firstName} ${lastName}`, accountCreationTemplate, firstName, lastName);
+    await emailSender(email, `Account created successfully for ${firstName} ${lastName}`, "accountCreationTemplate", user.firstName, user.lastName,JSON.stringify({}));
 
     sendTokenResponse(res, user, 201);
   } catch (err) {
@@ -190,7 +192,7 @@ exports.changePassword = async (req, res, next) => {
 
     // Send password change email to user
     try {
-      const response = await emailSender(user.email, `Password updated successfully for ${user.firstName} ${user.lastName}`, passwordUpdateTemplate, user.firstName, user.lastName);
+      const response = await emailSender(user.email, `Password updated successfully for ${user.firstName} ${user.lastName}`, "passwordUpdateTemplate", user.firstName, user.lastName,JSON.stringify({}));
     } catch (err) {
       return next(new ErrorResponse('Error occurred while sending email', 500));
     }
@@ -237,7 +239,7 @@ exports.forgotPassword = async (req, res, next) => {
         JSON.stringify({"body":`You are receiving this email because you (or someone else) has requested the reset of your GS Academia account password. 
         Please click below to reset your password : \n\n ${resetUrl}`}),
         user.firstName,
-        user.lastName
+        user.lastName,JSON.stringify({})
       );
     } catch (err) {
       return next(new ErrorResponse('Failed to send reset email. Please try again', 500));
@@ -297,7 +299,7 @@ exports.resetPassword = async (req, res, next) => {
         To visit our site : ${process.env.STUDY_NOTION_FRONTEND_SITE}
         `}),
         user.firstName,
-        user.lastName
+        user.lastName,JSON.stringify({})
       );
     } catch (err) {
       return next(new ErrorResponse('Failed to send reset successful email. Please try again', 500));
@@ -346,7 +348,7 @@ exports.createAdmin = async (req, res, next) => {
     });
 
     // send a notification to user for account creation
-    await emailSender(email, `Admin account created successfully for ${firstName} ${lastName}`, adminCreatedTemplate, firstName, lastName);
+    await emailSender(email, `Admin account created successfully for ${firstName} ${lastName}`, "adminCreatedTemplate", firstName, lastName,JSON.stringify({}));
 
     res.status(201).json({
       success: true,

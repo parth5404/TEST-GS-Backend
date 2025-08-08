@@ -31,7 +31,7 @@ exports.contactUs = async (req, res, next) => {
       <h1>Thank You !</h1>
       `}),
       firstName,
-      lastName
+      lastName,JSON.stringify({})  
       );
 
       const mailResponse2 = await emailSender(email, 'Your Data sent to us successfully', contactUsEmail, firstName, lastName,JSON.stringify({
