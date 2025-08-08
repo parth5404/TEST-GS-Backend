@@ -10,6 +10,9 @@ RUN go build -o go_email .
 FROM alpine:3.20
 WORKDIR /app
 COPY --from=builder /app/go_email .
+COPY --from=builder /app/mail/templates ./mail/templates
+
 # Env vars will be injected at runtime
+
 EXPOSE 8080
 CMD ["./go_email"]
