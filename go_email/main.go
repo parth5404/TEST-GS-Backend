@@ -6,9 +6,7 @@ import (
 	//"html/template"
 	"net/http"
 	"os"
-	"log"
 	"github.com/parth5404/TEST-GS-Backend/go_email/utils"
-	"github.com/joho/godotenv"
 	//"github.com/parth5404/TEST-GS-Backend/go_email/utils"
 )
 
