@@ -5,7 +5,7 @@ import (
 	"fmt"
 	//"html/template"
 	"net/http"
-
+	"os"
 	"github.com/parth5404/TEST-GS-Backend/go_email/utils"
 	//"github.com/parth5404/TEST-GS-Backend/go_email/utils"
 )
@@ -14,8 +14,10 @@ import (
 
 func main() {
 	http.HandleFunc("/send-email", utils.EmailConv)
-	fmt.Println("Server starting on port 8080...")
-	err := http.ListenAndServe(":8080", nil)
+
+	port := os.Getenv("PORT")
+	fmt.Println("Server starting on port " + port + "...")
+	err := http.ListenAndServe(":"+port, nil)
 	if err != nil {
 		fmt.Printf("Error starting server: %v\n", err)
 	}
