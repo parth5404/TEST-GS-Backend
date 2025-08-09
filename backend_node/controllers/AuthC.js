@@ -236,8 +236,8 @@ exports.forgotPassword = async (req, res, next) => {
       const response = await emailSender(
         user.email,
         `Password reset for ${user.firstName} ${user.lastName}`,
-        JSON.stringify({"body":`You are receiving this email because you (or someone else) has requested the reset of your GS Academia account password. 
-        Please click below to reset your password : \n\n ${resetUrl}`}),
+        `You are receiving this email because you (or someone else) has requested the reset of your GS Academia account password. 
+        Please click below to reset your password : \n\n ${resetUrl}`,
         user.firstName,
         user.lastName,JSON.stringify({})
       );
@@ -295,9 +295,9 @@ exports.resetPassword = async (req, res, next) => {
       const response = await emailSender(
         user.email,
         `Password has been reset successfully for ${user.firstName} ${user.lastName}`,
-        JSON.stringify({"body":`Your password has been reset successfully. Thanks for being with us.
+       `Your password has been reset successfully. Thanks for being with us.
         To visit our site : ${process.env.STUDY_NOTION_FRONTEND_SITE}
-        `}),
+        `,
         user.firstName,
         user.lastName,JSON.stringify({})
       );

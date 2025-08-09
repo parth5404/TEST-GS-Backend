@@ -1,22 +1,23 @@
 package main
 
 import (
-	//"encoding/json"
 	"fmt"
-	//"html/template"
 	"net/http"
 	"os"
+	"log"
+	"github.com/joho/godotenv"
 	"github.com/parth5404/TEST-GS-Backend/go_email/utils"
-	//"github.com/parth5404/TEST-GS-Backend/go_email/utils"
 )
 
 
 
 func main() {
-	// err := godotenv.Load()
-	// if err != nil {
-	// 	log.Fatal("Error loading .env file")
-	// }
+	if os.Getenv("ENVIRONMENT") == "development" {
+		err := godotenv.Load()
+		if err != nil {
+			log.Fatal("Error loading .env file")
+		}
+	}
 	http.HandleFunc("/send-email", utils.EmailConv)
 
 	port := os.Getenv("PORT")
