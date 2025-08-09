@@ -1,0 +1,1 @@
+ENVIRONMENT=development go run main.go

@@ -110,7 +110,11 @@ exports.sendPaymentSuccessEmail = async (req, res, next) => {
     }
 
     const user = await User.findById(req.user.id);
-    const emailResponse = await emailSender(user.email, 'Payment Received', paymentSuccessEmailTemplate(`${user.firstName} ${user.lastName}`, amount / 100, orderId, paymentId));
+    const emailResponse = await emailSender(user.email, 'Payment Received', paymentSuccessEmailTemplate, user.firstName, user.lastName,JSON.stringify({
+      "amount":amount,
+      "orderId":orderId,
+      "paymentId":paymentId
+    }));
 
     res.status(200).json({
       success: true,
@@ -168,7 +172,11 @@ const enrollStudent = async (courses, userId, res, next) => {
     }
 
     // Send an enrollment email to enrolled student
-    const emailResponse = await emailSender(user.email, `Successfully enroll into ${course.title}`, courseEnrollmentEmailTemplate(course.title, `${user.firstName} ${user.lastName}`));
+    const emailResponse = await emailSender(user.email, `Successfully enroll into ${course.title}`, courseEnrollmentEmailTemplate, user.firstName, user.lastName,JSON.stringify({
+      "courseTitle":course.title,
+      "courseDescription":course.description,
+      "courseThumbnail":course.thumbnail
+    }));
   }
 };
 

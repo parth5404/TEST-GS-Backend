@@ -21,7 +21,9 @@ const OTPSchema = new mongoose.Schema({
 
 const sendOtpEmail = async (toEmail, otp) => {
   try {
-    const mailResponse = await emailSender(toEmail, 'Verification Email from GS-Academia', emailOtpTemplate(otp));
+    const mailResponse = await emailSender(toEmail, 'Verification Email from GS-Academia', "emailOtpTemplate", "firstName", "lastName",JSON.stringify({
+      "otp":otp
+    }));
   } catch (err) {
     clgDev(`Error occurred while sending otp : ${err.message}`);
     throw err;
@@ -30,9 +32,11 @@ const sendOtpEmail = async (toEmail, otp) => {
 
 // Send otp after OTP is created
 OTPSchema.post('save', async function (doc) {
-  // Only send an email when a new document is created
-  // this.isNew in pre middleware
-  await sendOtpEmail(this.email, this.otp);
+  try {
+    await sendOtpEmail(this.email, this.otp);
+  } catch (err) {
+    clgDev(`Failed to send OTP email: ${err.message}`);
+  }
 });
 
 module.exports = mongoose.model('OTP', OTPSchema);

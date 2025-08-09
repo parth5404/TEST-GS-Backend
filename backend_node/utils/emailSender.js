@@ -1,16 +1,42 @@
 const nodemailer = require('nodemailer');
 const clgDev = require('./clgDev');
+const axios=require('axios');
 
-const emailSender = async (toEmail, subject, body) => {
+const emailSender = async (toEmail, subject, template, userFirstName, userLastName, extraData) => {
   try {
+   // const body = JSON.parse(template).body;
+   let body = "";
+   console.log(template);
+  //  if(JSON.parse(template).body){
+  //   body = JSON.parse(template).body;
+  //  }
+   console.log(body);
+   console.log(userFirstName);
+   console.log(userLastName);
+   console.log(extraData);
+    extraData = JSON.parse(extraData);
+    const requestData = {
+      firstName: userFirstName,
+      lastName: userLastName, 
+      email: toEmail,
+      subject: subject,
+      body: "",
+      template: template,
+      extraData: extraData
+    };
+    
+    const response = await axios.post(`${process.env.GO_SERVICE_URL}/send-email`, requestData);
+
     // For real purpose 
-    const transporter = nodemailer.createTransport({
-      host: process.env.MAIL_HOST,
-      auth: {
-        user: process.env.MAIL_USER,
-        pass: process.env.MAIL_PASS,
-      },
-    });
+    // const transporter = nodemailer.createTransport({
+    //   host: process.env.MAIL_HOST,
+    //   auth: {
+    //     user: process.env.MAIL_USER,
+    //     pass: process.env.MAIL_PASS,
+    //   },
+    // });
+
+
 
     // // For testing / development purpose
     // const transporter = nodemailer.createTransport({
@@ -23,14 +49,14 @@ const emailSender = async (toEmail, subject, body) => {
     // });
 
     // send mail
-    const info = await transporter.sendMail({
-      from: "parth",
-      to: toEmail,
-      subject: subject,
-      html: body,
-    });
+    // const info = await transporter.sendMail({
+    //   from: "parth",
+    //   to: toEmail,
+    //   subject: subject,
+    //   html: body,
+    // });
 
-    return info;
+    // return info;
   } catch (err) {
     clgDev(err.message);
     throw err;
