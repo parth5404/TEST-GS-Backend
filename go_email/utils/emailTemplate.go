@@ -82,6 +82,12 @@ func GetTemplate(req EmailRequest) (string, error) {
 			CountryCode: fmt.Sprintf("%v", req.ExtraData["countryCode"]),
 		}
 		fmt.Println(data)
+	case "test":
+		data = struct {
+			Name string
+		}{
+			Name: req.FirstName + " " + req.LastName,
+		}
 	default:
 		data = struct {
 			Template string
