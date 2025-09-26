@@ -1,114 +1,188 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta name="description" content="Web site created using create-react-app" />
-    <link rel="apple-touch-icon" href="logo192.png" />
-    <title>GS Academia - Backend</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>GS Academia - Backend (Enhanced)</title>
 
-    <!-- Social Media Meta Tags -->
-    <meta name="twitter:card" content="" />
-    <meta name="twitter:site" content="@" />
-    <meta name="twitter:creator" content="@" />
-    <meta name="twitter:title" content="GS Academia Backend - Edtech Website | parth5404" />
-    <meta name="twitter:description" content="Backend Restful API for GS Academia. GS Academia is Edtech Website which is a Full Stack (MERN) website." />
-    <meta name="twitter:image" content="https://i.postimg.cc/Gt8KWn0f/GSLOGOEMAIL.gif" />
+  <!-- Social Media Meta -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@parth5404" />
+  <meta name="twitter:title" content="GS Academia Backend - Go powered | parth5404" />
+  <meta name="twitter:description" content="Backend RESTful APIs for GS Academia (MERN) — now showcased with Go-themed visuals." />
+  <meta name="twitter:image" content="https://blog.golang.org/gopher/gopher.png" />
 
-    <meta property="og:url" content="https://test-gs-backend.onrender.com" />
-    <meta property="og:title" content="GS Academia Backend - Edtech Website | parth5404" />
-    <meta property="og:description" content="Backend Restful API for GS Academia. GS Academia is Edtech Website which is a Full Stack (MERN) website." />
-    <meta property="og:type" content="Edtech" />
-    <meta property="og:image" content="https://i.postimg.cc/Gt8KWn0f/GSLOGOEMAIL.gif" />
-    <meta property="og:image:type" content="image/jpg" />
+  <meta property="og:title" content="GS Academia Backend - Go powered | parth5404" />
+  <meta property="og:description" content="Backend RESTful APIs for GS Academia (MERN) — now showcased with Go-themed visuals." />
+  <meta property="og:image" content="https://blog.golang.org/gopher/gopher.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://test-gs-backend.onrender.com" />
 
-    <style>
-        body {
-            background-color: #f5f5f5;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            color: #333;
-            line-height: 1.6;
-        }
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            text-align: center;
-        }
+  <style>
+    :root{
+      --bg:#0f172a; /* dark navy */
+      --card:#0b1220;
+      --muted:#94a3b8;
+      --accent:#00a0df; /* go-ish blue */
+      --glass: rgba(255,255,255,0.04);
+      --radius:16px;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
 
-        .logo {
-            max-width: 200px;
-            transition: transform 0.3s ease;
-        }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0}
+    body{
+      background: linear-gradient(180deg, #071027 0%, #071222 55%, #031026 100%);
+      color:#e6eef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.5;
+    }
 
-        .logo:hover {
-            transform: scale(1.05);
-        }
+    .wrap{max-width:1100px;margin:40px auto;padding:28px}
 
-        h2, h3, h4 {
-            margin: 20px 0;
-        }
+    .hero{
+      display:grid;grid-template-columns:1fr 380px;gap:28px;align-items:center;
+    }
 
-        a {
-            color: #2196F3;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
+    .panel{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:28px;border-radius:var(--radius);box-shadow:0 8px 30px rgba(2,6,23,0.6);
+      border:1px solid rgba(255,255,255,0.03);
+    }
 
-        a:hover {
-            color: #1976D2;
-            text-decoration: underline;
-        }
+    .brand{
+      display:flex;gap:16px;align-items:center;
+    }
 
-        .card {
-            background: white;
-            border-radius: 10px;
-            padding: 30px;
-            margin: 20px 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
+    .brand img{width:88px;height:88px;border-radius:14px;background:var(--glass);padding:10px;object-fit:contain}
+    .brand h1{font-size:20px;margin:0}
+    .brand p{margin:0;color:var(--muted);font-size:13px}
 
-        .button {
-            display: inline-block;
-            padding: 12px 24px;
-            background-color: #2196F3;
-            color: white;
-            border-radius: 5px;
-            margin: 10px;
-            transition: background-color 0.3s ease;
-        }
+    h2{font-size:28px;margin:16px 0 6px}
+    p.lead{color:var(--muted);margin:0 0 18px}
 
-        .button:hover {
-            background-color: #1976D2;
-            text-decoration: none;
-        }
-    </style>
+    .buttons{margin-top:18px}
+    .btn{
+      display:inline-flex;align-items:center;gap:10px;padding:10px 16px;border-radius:12px;font-weight:600;text-decoration:none;
+      background:linear-gradient(90deg,var(--accent),#0077b6);color:white;border:0;box-shadow:0 6px 18px rgba(0,160,223,0.12);
+    }
+
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:#dbeafe}
+
+    .right-card{display:flex;flex-direction:column;gap:12px}
+    .right-card .stat{display:flex;justify-content:space-between;align-items:center;padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.02)}
+    .stat small{color:var(--muted)}
+
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}
+    .feature{background:rgba(255,255,255,0.02);padding:16px;border-radius:12px;text-align:center}
+    .feature h4{margin:8px 0 6px;font-size:15px}
+    .feature p{font-size:13px;color:var(--muted);margin:0}
+
+    footer{margin-top:28px;color:var(--muted);font-size:13px;text-align:center}
+
+    /* Responsive */
+    @media (max-width:900px){
+      .hero{grid-template-columns:1fr}
+      .features{grid-template-columns:repeat(2,1fr)}
+      .brand img{width:72px;height:72px}
+    }
+
+    @media (max-width:520px){
+      .features{grid-template-columns:1fr}
+      .wrap{padding:16px;margin:12px}
+      h2{font-size:22px}
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="card">
-            <a href="https://gsacademia-parth-lahotis-projects.vercel.app/">
-                <img class="logo" src="https://i.postimg.cc/Gt8KWn0f/GSLOGOEMAIL.gif" alt="GSAcademia-Logo" />
-            </a>
-
-            <h2>Welcome to the Backend of <a href="https://gsacademia-parth-lahotis-projects.vercel.app/">GS Academia</a></h2>
-            
-            <p>This server hosts the Restful APIs that power the GS Academia application.</p>
-
-            <h3>
-                <a href="https://gsacademia-parth-lahotis-projects.vercel.app/">GS Academia</a> is an Edtech Platform built with the MERN Stack
-            </h3>
-
-            <div>
-                <a href="https://gsacademia-parth-lahotis-projects.vercel.app/" class="button">Visit GS Academia</a>
-                <a href="https://github.com/parth5404/GS-Academia" class="button">View GitHub Repository</a>
-            </div>
+  <div class="wrap">
+    <div class="hero">
+      <div class="panel">
+        <div class="brand">
+          <!-- Go gopher image used as new visual -->
+          <img src="https://blog.golang.org/gopher/gopher.png" alt="Go Gopher">
+          <div>
+            <h1>GS Academia — Backend</h1>
+            <p>RESTful APIs powering the MERN full-stack application</p>
+          </div>
         </div>
+
+        <h2>Welcome to the Backend of <a href="https://gsacademia-parth-lahotis-projects.vercel.app/" style="color:var(--accent);text-decoration:none">GS Academia</a></h2>
+        <p class="lead">This server hosts secure REST endpoints for authentication, course management, payments and media handling. Built to be reliable, testable and easy to integrate.</p>
+
+        <div class="buttons">
+          <a class="btn" href="https://gsacademia-parth-lahotis-projects.vercel.app/" target="_blank" rel="noopener">Visit Frontend</a>
+          <a class="btn ghost" href="https://github.com/parth5404/GS-Academia" target="_blank" rel="noopener">View GitHub</a>
+        </div>
+
+        <div class="features" aria-hidden="false">
+          <div class="feature">
+            <img src="https://golang.org/lib/godoc/images/go-logo-blue.svg" alt="Go logo" style="height:36px;margin-bottom:6px;">
+            <h4>Go-friendly</h4>
+            <p>Gopher visuals to celebrate Go — swap in Go-based microservices easily.</p>
+          </div>
+
+          <div class="feature">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <h4>REST APIs</h4>
+            <p>Clear endpoints for Courses, Users, Auth, Payments (Razorpay) and Media (Cloudinary).</p>
+          </div>
+
+          <div class="feature">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 12h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <h4>Secure</h4>
+            <p>JWT authentication, bcrypt password hashing and role-based access control.</p>
+          </div>
+        </div>
+
+        <footer>
+          <div style="margin-top:18px">Built & maintained by Parth Lahoti • <a href="mailto:parthlahoti5404@gmail.com" style="color:var(--accent);">parthlahoti5404@gmail.com</a></div>
+        </footer>
+      </div>
+
+      <aside class="right-card panel">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px">
+          <img src="https://blog.golang.org/gopher/frontpage.png" alt="gopher" style="width:80px;height:80px;border-radius:12px;background:var(--glass);padding:8px;object-fit:cover">
+          <div>
+            <div style="font-weight:700">GS Academia Backend</div>
+            <small style="color:var(--muted)">API host: test-gs-backend.onrender.com</small>
+          </div>
+        </div>
+
+        <div class="stat">
+          <div>
+            <div style="font-weight:700">/api/v1/auth</div>
+            <small class="muted">Authentication endpoints (login, signup, refresh)</small>
+          </div>
+          <div><small class="muted">v1</small></div>
+        </div>
+
+        <div class="stat">
+          <div>
+            <div style="font-weight:700">/api/v1/courses</div>
+            <small class="muted">Course CRUD, search, pagination</small>
+          </div>
+          <div><small class="muted">Protected</small></div>
+        </div>
+
+        <div class="stat">
+          <div>
+            <div style="font-weight:700">Payments & Media</div>
+            <small class="muted">Razorpay and Cloudinary integrations</small>
+          </div>
+          <div><small class="muted">Live</small></div>
+        </div>
+
+        <div style="margin-top:14px;text-align:center">
+          <a class="btn" href="/docs" style="width:100%;justify-content:center">Open API Docs</a>
+        </div>
+      </aside>
     </div>
+  </div>
 </body>
 </html>
