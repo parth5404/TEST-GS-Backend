@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"sync"
 	"time"
 
 	"github.com/robfig/cron/v3"
@@ -12,7 +13,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func setup() {
+
+func StartNewsletterScheduler() (*mongo.Client, error) {
 	// Load Mongo URI
 	mongoURI := os.Getenv("MONGODB_URI")
 	if mongoURI == "" {
@@ -26,25 +28,20 @@ func setup() {
 	clientOpts := options.Client().ApplyURI(mongoURI)
 	client, err := mongo.Connect(ctx, clientOpts)
 	if err != nil {
-		log.Fatalf("mongo connect error: %v", err)
+		return nil, fmt.Errorf("mongo connect error: %w", err)
 	}
 
 	// Verify connection
 	if err = client.Ping(ctx, nil); err != nil {
-		log.Fatalf("mongo ping error: %v", err)
+		_ = client.Disconnect(context.Background())
+		return nil, fmt.Errorf("mongo ping error: %w", err)
 	}
 	log.Println("Connected to MongoDB")
-
-	// Ensure client disconnect on exit
-	defer func() {
-		_ = client.Disconnect(context.Background())
-	}()
 
 	// Create cron scheduler
 	c := cron.New()
 
 	// Add function to run every Monday at 09:00 (server timezone)
-	// If you want timezone aware schedules, use cron.New(cron.WithLocation(...))
 	_, err = c.AddFunc("0 9 * * MON", func() {
 		log.Println("Running weekly newsletter job:", time.Now())
 		if err := sendWeeklyNewsletter(client); err != nil {
@@ -52,36 +49,59 @@ func setup() {
 		}
 	})
 	if err != nil {
-		log.Fatalf("failed to add cron job: %v", err)
+		_ = client.Disconnect(context.Background())
+		return nil, fmt.Errorf("failed to add cron job: %w", err)
 	}
 
 	c.Start()
 	log.Println("Cron scheduler started")
 
-	select {}
+	return client, nil
 }
 
-
+// sendWeeklyNewsletter fetches all users and sends them an email concurrently with bounded workers.
 func sendWeeklyNewsletter(client *mongo.Client) error {
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 	defer cancel()
 
-	users, err := utils.GetAllUsers(client, "your_db_name", "users")
+	users, err := GetAllUsers(client, "your_db_name", "users")
 	if err != nil {
 		return fmt.Errorf("GetAllUsers failed: %w", err)
 	}
 
+	const maxWorkers = 10 
+	sem := make(chan struct{}, maxWorkers)
+	var wg sync.WaitGroup
+
 	for _, u := range users {
-		subject := "Weekly Course Newsletter"
-		body := "Hello " + u.FirstName + ",\n\nHere is your weekly course newsletter..."
-		if err := utils.SendEmail(u.Email, subject, body); err != nil {
-			log.Printf("failed to send email to %s: %v", u.Email, err)
-			continue
+		// respect context cancellation
+		if ctx.Err() != nil {
+			log.Println("context cancelled, stopping sends")
+			break
 		}
-		log.Printf("email sent to %s", u.Email)
+
+		wg.Add(1)
+		sem <- struct{}{} // acquire slot
+
+		// capture u for goroutine
+		user := u
+		go func() {
+			defer wg.Done()
+			defer func() { <-sem }() // release slot
+
+			subject := "Weekly Course Newsletter"
+			body := "Hello " + user.FirstName + ",\n\nHere is your weekly course newsletter..."
+
+			if err := SendEmail(user.Email, subject, body); err != nil {
+				log.Printf("failed to send email to %s: %v", user.Email, err)
+				return
+			}
+			log.Printf("email sent to %s", user.Email)
+		}()
 	}
 
+	wg.Wait()
 
-	_ = ctx 
+	
 	return nil
 }
