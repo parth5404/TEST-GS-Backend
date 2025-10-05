@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daily LMS Update</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f5f5f5;
+      }
+      .email-container {
+        background-color: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+      .header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 40px 30px;
+        text-align: center;
+      }
+      .header h1 {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 300;
+      }
+      .header p {
+        margin: 10px 0 0 0;
+        opacity: 0.9;
+        font-size: 16px;
+      }
+      .content {
+        padding: 40px 30px;
+      }
+      .greeting {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 20px;
+      }
+      .highlight {
+        background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+        padding: 25px;
+        border-left: 5px solid #2196f3;
+        margin: 25px 0;
+        border-radius: 8px;
+      }
+      .highlight h3 {
+        margin-top: 0;
+        color: #1976d2;
+      }
+      .tips-section {
+        background: #f8f9fa;
+        padding: 25px;
+        border-radius: 10px;
+        margin: 25px 0;
+      }
+      .tips-section h3 {
+        color: #e65100;
+        margin-top: 0;
+      }
+      .tips-section ul {
+        list-style: none;
+        padding: 0;
+      }
+      .tips-section li {
+        padding: 8px 0;
+        border-bottom: 1px solid #e0e0e0;
+      }
+      .tips-section li:last-child {
+        border-bottom: none;
+      }
+      .button {
+        background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+        color: white;
+        padding: 15px 30px;
+        text-decoration: none;
+        border-radius: 25px;
+        display: inline-block;
+        margin: 25px 0;
+        font-weight: bold;
+        transition: transform 0.2s;
+      }
+      .button:hover {
+        transform: translateY(-2px);
+      }
+      .footer {
+        text-align: center;
+        margin-top: 40px;
+        padding-top: 30px;
+        border-top: 2px solid #f0f0f0;
+        color: #666;
+        font-size: 14px;
+      }
+      .footer p {
+        margin: 10px 0;
+      }
+      .motivational-quote {
+        background: linear-gradient(135deg, #fff3e0 0%, #fce4ec 100%);
+        padding: 20px;
+        border-radius: 10px;
+        margin: 25px 0;
+        text-align: center;
+        font-style: italic;
+        color: #d84315;
+        border-left: 5px solid #ff9800;
+      }
+      .stats-section {
+        display: flex;
+        justify-content: space-around;
+        background: #e8f5e8;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 25px 0;
+      }
+      .stat-item {
+        text-align: center;
+      }
+      .stat-number {
+        font-size: 24px;
+        font-weight: bold;
+        color: #2e7d32;
+      }
+      .stat-label {
+        font-size: 12px;
+        color: #666;
+        text-transform: uppercase;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-container">
+      <div class="header">
+        <h1>🎓 Daily LMS Update</h1>
+        <p>{{.Date}}</p>
+      </div>
+
+      <div class="content">
+        <div class="greeting">Hello {{.Name}}! 👋</div>
+
+        <div class="highlight">
+          <h3>📚 Today's Learning Reminder</h3>
+          <p>
+            Don't forget to continue your learning journey! Every day is an
+            opportunity to grow and acquire new skills. Your consistent effort
+            today will compound into expertise tomorrow.
+          </p>
+        </div>
+
+        <div class="motivational-quote">
+          <p>
+            "The expert in anything was once a beginner who refused to give up."
+            - Helen Hayes
+          </p>
+        </div>
+
+        <div class="tips-section">
+          <h3>🔥 Quick Tips for Today:</h3>
+          <ul>
+            <li>📖 Spend at least 30 minutes on your enrolled courses</li>
+            <li>💡 Practice what you learned yesterday</li>
+            <li>🤝 Engage with your fellow learners in discussions</li>
+            <li>🎯 Set a small learning goal for today</li>
+            <li>📝 Take notes on key concepts you discover</li>
+            <li>🔄 Review and reinforce previous lessons</li>
+          </ul>
+        </div>
+
+        <div class="stats-section">
+          <div class="stat-item">
+            <div class="stat-number">30+</div>
+            <div class="stat-label">Minutes Learning</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">1</div>
+            <div class="stat-label">New Skill</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">∞</div>
+            <div class="stat-label">Possibilities</div>
+          </div>
+        </div>
+
+        <div class="highlight">
+          <h3>💪 Your Learning Streak</h3>
+          <p>
+            Keep up the great work! Consistency is key to mastering new skills.
+            Remember, small daily progress leads to big achievements. You're
+            building something amazing - your future self will thank you!
+          </p>
+        </div>
+
+        <center>
+          <a href="#" class="button">Continue Learning 🚀</a>
+        </center>
+
+        <div class="footer">
+          <p>
+            <strong>This is your daily motivation email from LMS Team</strong>
+          </p>
+          <p>Stay curious, stay learning! 🌟</p>
+          <hr
+            style="
+              border: none;
+              height: 1px;
+              background: #e0e0e0;
+              margin: 20px 0;
+            "
+          />
+          <small
+            >You're receiving this because you're an active member of our
+            learning community.<br />
+            Keep pushing your boundaries and achieving your goals!</small
+          >
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
