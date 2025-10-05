@@ -41,10 +41,6 @@ type User struct {
 func StartDailyEmailScheduler() (*mongo.Client, error) {
 	// Load Mongo URI
 	mongoURI := os.Getenv("MONGO_URI")
-	// if mongoURI == "" {
-	// 	log.Println("Warning: MONGO_URI not set, using default localhost")
-	// 	mongoURI = "mongodb+srv://parthlahoti5404:sher5404@cluster0.wbav0jr.mongodb.net/"
-	// }
 
 	// Add database name to URI if not present
 	if !strings.Contains(mongoURI, "mongodb.net/") || strings.HasSuffix(mongoURI, "mongodb.net/") {
@@ -84,7 +80,11 @@ func StartDailyEmailScheduler() (*mongo.Client, error) {
 	log.Println("✅ Connected to MongoDB for cron jobs")
 
 	// Create cron scheduler with timezone support
-	location, _ := time.LoadLocation("Asia/Kolkata") // IST timezone
+	location, err := time.LoadLocation("Asia/Kolkata") // IST timezone
+	if err != nil {
+		log.Printf("⚠️  Failed to load IST timezone, using UTC: %v", err)
+		location = time.UTC
+	}
 	c := cron.New(cron.WithLocation(location))
 
 	// Daily at 9:00 AM IST - "0 9 * * *" means every day at 9 AM
@@ -226,7 +226,12 @@ func sendDailyNewsletterToAll(client *mongo.Client) error {
 
 // createDailyEmailBody creates the HTML body for daily email
 func createDailyEmailBody(user User) string {
-	currentDate := time.Now().Format("Monday, January 2, 2006")
+	// Use IST timezone for date formatting
+	location, err := time.LoadLocation("Asia/Kolkata")
+	if err != nil {
+		location = time.UTC // Fallback to UTC if IST fails
+	}
+	currentDate := time.Now().In(location).Format("Monday, January 2, 2006")
 
 	return fmt.Sprintf(`
 <!DOCTYPE html>
