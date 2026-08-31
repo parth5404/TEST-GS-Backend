@@ -254,6 +254,8 @@ dheere-dheere apne aap saaf hoga. Ye step wapas hata de.)*
 
 ## Aage
 
+> Poora day-wise roadmap: [`PLAN-14-DAYS.md`](./PLAN-14-DAYS.md)
+
 - **Day 7** — jab asli tests aayenge, `npm test` step apne aap unhe chalane lagega.
   CI config badalne ki zarurat nahi. Achhe setup ki yahi pehchaan hai.
 - **Day 14** — README mein badge:

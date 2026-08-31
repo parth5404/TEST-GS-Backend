@@ -304,6 +304,8 @@ incident ka pattern hai — log aise hi image registry pe secrets push kar dete 
 
 ## Aage kya
 
+> Poora day-wise roadmap: [`PLAN-14-DAYS.md`](./PLAN-14-DAYS.md)
+
 Day 6 pe do Go worker ek saath chalane honge, tab ye kaam aayega:
 
 ```bash
