@@ -1,0 +1,29 @@
+# Pre-commit hook — `git commit` chalane se PEHLE ye chalta hai.
+# Non-zero exit hone pe commit ruk jaata hai.
+#
+# Yahan sirf STAGED files pe kaam hota hai, pure repo pe nahi.
+# Reason: pura repo lint karne mein 10-15 sec lagte, aur commit dheema
+# ho jaata. Dheema hook = log --no-verify lagana seekh jaate hain.
+
+# ── JavaScript: eslint --fix + prettier --write staged files pe ──────────────
+# lint-staged backend_node ke andar se chalta hai kyunki config wahin hai.
+cd backend_node && npx lint-staged
+cd ..
+
+# ── Go: gofmt check ─────────────────────────────────────────────────────────
+# gofmt Go ka official formatter hai. `-l` un files ke naam print karta hai
+# jo formatted nahi hain. Kuch print hua matlab commit rok do.
+STAGED_GO=$(git diff --cached --name-only --diff-filter=ACM | grep '\.go$' || true)
+
+if [ -n "$STAGED_GO" ]; then
+  UNFORMATTED=$(gofmt -l $STAGED_GO)
+  if [ -n "$UNFORMATTED" ]; then
+    echo ""
+    echo "❌ Ye Go files gofmt se format nahi hain:"
+    echo "$UNFORMATTED"
+    echo ""
+    echo "   Theek karne ke liye:  gofmt -w $UNFORMATTED"
+    echo ""
+    exit 1
+  fi
+fi

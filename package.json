@@ -1,0 +1,17 @@
+{
+  "name": "gs-academia",
+  "version": "1.0.0",
+  "private": true,
+  "description": "GS Academia — Node API + Go email service. Root package sirf dev tooling ke liye hai.",
+  "scripts": {
+    "//": "Ye root package.json app nahi chalata. Ye sirf git hooks hold karta hai.",
+    "//prepare": "npm install chalane pe husky khud ke hooks install kar leta hai",
+    "prepare": "husky",
+    "lint": "npm --prefix backend_node run lint",
+    "format": "npm --prefix backend_node run format",
+    "test": "npm --prefix backend_node test"
+  },
+  "devDependencies": {
+    "husky": "^9.1.6"
+  }
+}
