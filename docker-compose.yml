@@ -1,26 +1,141 @@
-version: "3.9"
+# Docker Compose — poore stack ko ek command se chalane ke liye.
+#
+#   docker compose up -d      → sab shuru
+#   docker compose ps         → kaun chal raha hai, kaun healthy hai
+#   docker compose logs -f    → saare logs live
+#   docker compose down       → band karo (data bacha rahega)
+#   docker compose down -v    → band karo AUR database wipe karo
+#
+# Note: purani `version: "3.9"` line hata di hai. Modern Docker Compose use hi nahi karta,
+# aur warning deta hai.
 
 services:
-  go-mail:
-    image: parth5404/go-mail:latest
-    env_file:
-      - ./go_email/.env
+  # ─────────────────────────────────────────────────────────────────────────
+  # MongoDB — pehle repo mein tha hi nahi, isliye local dev possible nahi tha.
+  #
+  # `--replSet rs0` sabse important line hai. Ye Mongo ko replica set mode mein
+  # chalata hai. Single node ka replica set thoda ajeeb lagta hai, par ye zaruri hai:
+  #
+  #   • Day 12 — transactions ke liye replica set MANDATORY hai
+  #   • Day 15 — change streams (CDC) ko bhi replica set chahiye
+  #
+  # Standalone Mongo pe ye dono features error dete hain, isliye abhi se sahi setup.
+  # ─────────────────────────────────────────────────────────────────────────
+  mongo:
+    image: mongo:7
+    command: ["--replSet", "rs0", "--bind_ip_all"]
     ports:
-      - "8080:8080" # optional agar bahar se direct Go ko access karna ho
+      # "host:container" — tere laptop ka 27017 container ke 27017 se juda.
+      # Isi wajah se tu Compass ya mongosh se seedha connect kar sakta hai.
+      - "27017:27017"
+    volumes:
+      # Named volume — container delete hone pe bhi data bacha rehta hai.
+      # Data mitana ho toh: docker compose down -v
+      - mongo-data:/data/db
+    healthcheck:
+      # Healthcheck do kaam karta hai:
+      #   1. Batata hai Mongo taiyaar hai ya nahi
+      #   2. Pehli baar replica set ko initiate bhi kar deta hai
+      #
+      # rs.status() error deta hai jab tak RS initiate na ho — isliye try/catch.
+      # Ek baar initiate ho gaya toh aage har baar rs.status() chal jayega.
+      test: >
+        mongosh --quiet --eval "
+          try {
+            rs.status().ok
+          } catch (e) {
+            rs.initiate({_id: 'rs0', members: [{_id: 0, host: 'mongo:27017'}]})
+          }
+        "
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      # start_period ke andar fail hone se retries count nahi hote — Mongo ko
+      # boot hone ka time mil jata hai bina "unhealthy" mark hue.
+      start_period: 20s
     networks:
       - app-network
 
+  # ─────────────────────────────────────────────────────────────────────────
+  # Go email service
+  #
+  # PEHLE: image: parth5404/go-mail:latest  ← Docker Hub se prebuilt image
+  # AB:    build: ./go_email                ← tera local code
+  #
+  # Ye sabse zaruri fix hai. Pehle wale setup mein tu code change karta,
+  # `docker compose up` chalata, aur kuch nahi badalta — kyunki wo Hub se
+  # purani image kheench raha tha. Ghanton ka confusion isi se aata hai.
+  # ─────────────────────────────────────────────────────────────────────────
+  go-mail:
+    build:
+      context: ./go_email
+      dockerfile: Dockerfile
+    env_file:
+      - ./go_email/.env
+    environment:
+      # env_file se aane wali value ko yahan override kar sakte hain.
+      # "mongo" hostname compose network ke andar hi kaam karta hai (neeche dekh).
+      MONGO_URI: mongodb://mongo:27017/gsacademia?replicaSet=rs0
+    # NOTE: `ports:` yahan JAAN-BOOJH KE nahi hai.
+    #
+    # Pehle "8080:8080" tha, matlab /send-email poori duniya ko dikh raha tha —
+    # bina kisi auth ke. Koi bhi tere Gmail se mail bhej sakta tha.
+    #
+    # Bina ports ke bhi Node isse http://go-mail:8080 pe access kar sakta hai,
+    # kyunki dono ek hi network pe hain. Bahar se koi nahi pahunch sakta.
+    #
+    # Debug ke liye khud access karna ho toh temporarily uncomment kar:
+    # ports:
+    #   - "8080:8080"
+    depends_on:
+      mongo:
+        # `depends_on` akela sirf START ORDER deta hai — "mongo pehle shuru karo".
+        # Wo ye NAHI kehta ki mongo taiyaar ho gaya.
+        # `condition: service_healthy` upar wale healthcheck ka intezaar karta hai.
+        # Isi ek line se wo classic "connection refused on startup" bug khatam hota hai.
+        condition: service_healthy
+    networks:
+      - app-network
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Node API
+  # ─────────────────────────────────────────────────────────────────────────
   node-app:
-    image: parth5404/backend-node:latest
+    build:
+      context: ./backend_node
+      # Local dev ke liye Dockerfile.dev — isme nodemon hai, code change pe
+      # apne aap restart hota hai. Production wala Dockerfile alag hai.
+      dockerfile: Dockerfile.dev
     env_file:
       - ./backend_node/.env
+    environment:
+      NODE_ENV: development
+      MONGO_URI: mongodb://mongo:27017/gsacademia?replicaSet=rs0
+      # "go-mail" — service ka naam hi hostname hai. localhost NAHI chalega,
+      # kyunki har container ka apna localhost hota hai.
+      GO_SERVICE_URL: http://go-mail:8080
     ports:
       - "4000:4000"
+    volumes:
+      # Bind mount: tera local code seedha container ke andar dikhta hai.
+      # Code save karte hi nodemon restart kar dega — rebuild ki zarurat nahi.
+      - ./backend_node:/app
+      # Ye anonymous volume upar wale mount ko OVERRIDE karta hai sirf node_modules
+      # ke liye. Iske bina tera local node_modules (ya uska na hona) container ke
+      # andar wale ko chhupa deta. Ye ek jaana-maana Docker+Node gotcha hai.
+      - /app/node_modules
     depends_on:
-      - go-mail
+      mongo:
+        condition: service_healthy
+      go-mail:
+        # Go ke liye sirf start order chahiye — Node usse boot pe call nahi karta.
+        condition: service_started
     networks:
       - app-network
 
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  mongo-data:

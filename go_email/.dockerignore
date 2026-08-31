@@ -1,0 +1,23 @@
+# Ye file pehle bilkul khali thi — matlab `COPY . .` sab kuch utha raha tha,
+# .env samet. Go image mein tere SMTP credentials bake ho rahe the.
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Git
+.git
+.gitignore
+
+# Dev-only
+*.md
+Dockerfile
+.dockerignore
+run.sh
+
+# Compiled binary — image ke andar build hota hai, local copy nahi chahiye
+go_email
+
+# OS junk
+.DS_Store

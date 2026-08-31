@@ -1,0 +1,32 @@
+# DEVELOPMENT image — docker-compose isi ko build karta hai.
+#
+# Production wale Dockerfile se teen farq:
+#   1. devDependencies bhi install hoti hain (nodemon chahiye)
+#   2. Source code COPY nahi hota — compose bind-mount karta hai, taaki file
+#      save karte hi restart ho jaye bina rebuild ke
+#   3. root user hi theek hai — bind mount ke saath file permissions ka
+#      jhanjhat nahi hota
+
+FROM node:20-alpine
+
+RUN apk add --no-cache dumb-init
+
+ENV NODE_ENV=development
+
+WORKDIR /app
+
+# Yahan bhi package files pehle — same layer-caching wajah se.
+COPY package.json package-lock.json ./
+
+# Dev mein `npm install` theek hai, `npm ci` nahi — kyunki tu dev ke dauraan
+# naye packages add karega aur lockfile update hoga.
+RUN npm install
+
+# Source code yahan copy NAHI ho raha.
+# compose ka `volumes: - ./backend_node:/app` isse live mount karta hai.
+# Isliye code change → nodemon restart, docker rebuild ki zarurat nahi.
+
+EXPOSE 4000
+
+ENTRYPOINT ["dumb-init", "--"]
+CMD ["npm", "run", "dev"]

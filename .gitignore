@@ -1,0 +1,24 @@
+# Root .gitignore — pehle sirf backend_node/ aur go_email/ ke andar the,
+# root pe koi nahi tha. Root package.json (husky ke liye) add karne ke baad
+# root pe bhi node_modules ban jaata hai.
+
+node_modules/
+
+# Environment files — .example wale commit hote hain, asli kabhi nahi
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+
+# Tooling caches
+.eslintcache
+coverage/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

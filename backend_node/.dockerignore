@@ -1,1 +1,38 @@
+# .dockerignore = .gitignore, par `docker build` ke liye.
+#
+# Yahan listed cheezein "build context" mein nahi jaatin — matlab Docker daemon
+# ko bheji hi nahi jaatin, aur `COPY . .` unhe uthata bhi nahi.
+#
+# Do fayde:
+#   1. SECURITY — pehle sirf `node_modules` tha, matlab local .env file
+#      image ke andar bake ho jaati thi. Registry pe push karo toh secrets
+#      bhi chale gaye. Ye asli production incident ka pattern hai.
+#   2. SPEED — chhota context = tez build.
+
+# Secrets — sabse zaruri line
+.env
+.env.*
+!.env.example
+
+# Dependencies (image ke andar dobara install hoti hain)
 node_modules
+npm-debug.log*
+
+# Git
+.git
+.gitignore
+
+# Seed fixtures — app inhe runtime pe padhta hi nahi
+_data
+
+# Dev-only
+.eslintcache
+coverage
+*.md
+Dockerfile
+Dockerfile.dev
+.dockerignore
+
+# OS junk
+.DS_Store
+Thumbs.db
