@@ -3,8 +3,8 @@ package utils
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"github.com/parth5404/TEST-GS-Backend/go_email/services"
+	"net/http"
 )
 
 type EmailRequest struct {

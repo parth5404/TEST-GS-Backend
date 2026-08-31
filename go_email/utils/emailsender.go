@@ -2,10 +2,10 @@ package utils
 
 import (
 	"crypto/tls"
-	"log"
-	"os"
 	"github.com/joho/godotenv"
 	"gopkg.in/gomail.v2"
+	"log"
+	"os"
 )
 
 func SendEmail(to string, subject string, body string) error {

@@ -1,9 +1,10 @@
 package utils
+
 import (
+	"bytes"
+	"fmt"
 	"html/template"
 	"os"
-	"fmt"
-	"bytes"
 )
 
 func GetTemplate(req EmailRequest) (string, error) {
