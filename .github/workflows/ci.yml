@@ -1,0 +1,182 @@
+# ═════════════════════════════════════════════════════════════════════════════
+# GitHub Actions — Continuous Integration
+#
+# CI ka matlab: har push pe GitHub ek saaf machine leta hai, tera code clone
+# karta hai, aur tere checks chalata hai. Fail hua toh PR pe red ❌ dikhta hai.
+#
+# Kyun zaruri hai: "mere laptop pe toh chal raha tha" ka jawab. CI ek khaali
+# machine pe chalta hai — agar tune koi dependency install karke package.json
+# mein add karna bhool gaya (jaise abhi `axios` ke saath hua hai), toh CI
+# pakad lega, tera laptop nahi.
+#
+# Ye file `.github/workflows/` mein honi CHAHIYE — GitHub sirf wahin dhundta hai.
+# ═════════════════════════════════════════════════════════════════════════════
+
+# Workflow ka naam — GitHub ke "Actions" tab mein yahi dikhega.
+name: CI
+
+# ── on: kab chalega ──────────────────────────────────────────────────────────
+on:
+  # Kisi bhi branch pe push hone pe.
+  push:
+    branches: ['**']
+
+  # Aur jab main/master pe PR khule ya update ho.
+  #
+  # Dono kyun? Push tujhe apni branch pe turant feedback deta hai. PR event
+  # merge ke BAAD ka result check karta hai (GitHub tera code main ke saath
+  # merge karke test karta hai) — isse wo bug pakde jaate hain jo tab aate hain
+  # jab tere PR ke saath koi aur PR bhi merge ho gaya ho.
+  pull_request:
+    branches: [main, master]
+
+  # Actions tab se manually chalane ka button de deta hai. Debug ke liye kaam ka.
+  workflow_dispatch:
+
+# ── jobs ─────────────────────────────────────────────────────────────────────
+# Har job ALAG machine pe chalta hai, aur by default SAATH-SAATH (parallel).
+# Neeche do jobs hain — node aur go — dono ek saath chalenge, isliye total
+# time slow wale job jitna hi lagega.
+#
+# Ek job ko doosre ka intezaar karwana ho toh `needs: <job-id>` use karte hain.
+jobs:
+  # ───────────────────────────────────────────────────────────────────────────
+  # JOB 1 — Node API
+  # ───────────────────────────────────────────────────────────────────────────
+  node:
+    name: Node — lint & test
+
+    # `runs-on` batata hai kaunsi machine chahiye. ubuntu-latest sabse tez aur
+    # sasta hai. windows-latest / macos-latest bhi milte hain (mehnge).
+    runs-on: ubuntu-latest
+
+    # `defaults` se har `run` step isi folder mein chalega — warna har step
+    # mein `cd backend_node` likhna padta.
+    defaults:
+      run:
+        working-directory: backend_node
+
+    # Steps UPAR SE NEECHE, ek ke baad ek chalte hain. Koi fail hua toh baaki
+    # skip ho jaate hain (jab tak `if: always()` na likha ho).
+    steps:
+      # `uses:` = koi aur ka banaya hua ready-made action chalao.
+      # `actions/checkout` tera repo runner pe clone karta hai.
+      # Iske bina runner khaali hota hai. Ye hamesha pehla step hota hai.
+      #
+      # `@v4` version pin hai. Isse aage koi breaking change tera CI nahi todega.
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+          # `cache: npm` npm ka download cache save/restore karta hai.
+          # Pehla run normal speed, uske baad `npm ci` bahut tez.
+          #
+          # `cache-dependency-path` isliye chahiye kyunki lockfile root mein
+          # nahi hai — action ko batana padta hai kahan dekhe.
+          cache: npm
+          cache-dependency-path: backend_node/package-lock.json
+
+      # `run:` = shell command chalao (bash, ubuntu pe).
+      #
+      # `npm ci` vs `npm install`:
+      #   ci → package-lock.json ko exactly follow karta hai, node_modules
+      #        pehle delete karta hai, lockfile kabhi modify nahi karta.
+      #        CI mein hamesha `ci` use karna — reproducible builds ke liye.
+      - name: Install dependencies
+        run: npm ci
+
+      # Yahi command tu local pe bhi chalata hai. Ye "parity" zaruri hai —
+      # agar CI kuch alag chalata, toh local green + CI red ka confusion hota.
+      - name: Lint
+        run: npm run lint
+
+      # Abhi ye placeholder hai. Day 7 pe jab mongodb-memory-server + supertest
+      # aayenge, package.json ka `test` script badlega aur ye step apne aap
+      # asli tests chalane lagega.
+      - name: Test
+        run: npm test
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # JOB 2 — Go email service
+  # ───────────────────────────────────────────────────────────────────────────
+  go:
+    name: Go — vet & build
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: go_email
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          # go.mod se hi version padh lo — do jagah version maintain karne se
+          # bachne ke liye. Ye hamesha behtar hai.
+          go-version-file: go_email/go.mod
+          cache-dependency-path: go_email/go.sum
+
+      # `go vet` Go ka built-in static analyser hai. Wo galtiyan pakadta hai
+      # jo compile toh ho jaati hain par galat hoti hain — jaise galat Printf
+      # format string, ya lock ko value se copy karna.
+      - name: Vet
+        run: go vet ./...
+
+      # `./...` ka matlab "ye folder aur saare sub-folders".
+      - name: Build
+        run: go build -v ./...
+
+      # gofmt Go ka official formatter hai — Go mein style pe koi bahes nahi
+      # hoti, ek hi sahi format hota hai.
+      # `-l` unformatted files list karta hai. Kuch mila toh fail kar do.
+      - name: Check formatting
+        run: |
+          UNFORMATTED=$(gofmt -l .)
+          if [ -n "$UNFORMATTED" ]; then
+            echo "❌ Ye files gofmt se format nahi hain:"
+            echo "$UNFORMATTED"
+            exit 1
+          fi
+          echo "✅ Sab files sahi format mein hain"
+
+# ═════════════════════════════════════════════════════════════════════════════
+# AAGE KE LIYE — abhi zarurat nahi, par jaan lena
+#
+# 1. MATRIX — ek hi job ko kai versions pe chalane ke liye:
+#
+#      strategy:
+#        matrix:
+#          node-version: ['18', '20', '22']
+#      steps:
+#        - uses: actions/setup-node@v4
+#          with:
+#            node-version: ${{ matrix.node-version }}
+#
+#    Ye 3 alag jobs banata hai, parallel. Library banate waqt zaruri hai.
+#    Tere jaise app ke liye ek hi version kaafi hai.
+#
+# 2. SERVICE CONTAINERS — Day 7 pe jab asli integration tests aayenge, tujhe
+#    CI mein Mongo chahiye hoga. Do rasta:
+#      • mongodb-memory-server (npm) — CI config mein kuch nahi chahiye ✅ simpler
+#      • GitHub ka `services:` block jo Mongo container chalata hai
+#
+#    Hum pehla wala use karenge.
+#
+# 3. SECRETS — API keys workflow file mein kabhi mat likhna. GitHub pe
+#    Settings → Secrets and variables → Actions mein daal, phir aise use kar:
+#      env:
+#        RAZORPAY_KEY: ${{ secrets.RAZORPAY_KEY }}
+#    GitHub logs mein inhe apne aap masking karta hai. Par `echo $SECRET`
+#    kabhi mat karna.
+#
+# 4. BADGE — README ke top pe green/red badge lagane ke liye:
+#      ![CI](https://github.com/parth5404/TEST-GS-Backend/actions/workflows/ci.yml/badge.svg)
+#    Ye Day 14 ke README rewrite mein aayega.
+# ═════════════════════════════════════════════════════════════════════════════
